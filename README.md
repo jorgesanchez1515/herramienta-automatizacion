@@ -28,10 +28,13 @@ Para la subida de imagenes a firebase se debe especificar la ruta en el storage 
 
 ej. 
 
-Si especificamos la siguiente ruta misimagenes/Jorge/Sanchez/  
+Si especificamos la siguiente ruta:
+misimagenes/Jorge/Sanchez/  
 Las imagenes se guardarán en firebase de la siguiente forma
 
 ![image](https://user-images.githubusercontent.com/88329284/130080687-4a4c4474-436a-4671-b60f-5604ad5824da.png)
+
+IMPORTANTE: no olvidar añadir el ultimo '/' al especificar la ruta
 
 ![image](https://user-images.githubusercontent.com/88329284/130080503-a4c48023-9a2e-4aac-a83c-b7850a77ff4f.png)
 
