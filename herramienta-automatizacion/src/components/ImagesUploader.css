@@ -1,0 +1,30 @@
+.ImagesUploader {
+	height: 100%;
+	width: 100%;
+	background-color: #FFFFFF;
+  
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.dataOutput {
+	margin-top: 50px;
+	width: 60%;
+}
+  
+.dataInput {
+	margin-top: 50px;
+	width:  60%;
+}
+
+.buttons {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.noMargin {
+	margin: 0px;
+}
