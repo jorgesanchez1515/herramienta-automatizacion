@@ -40,8 +40,13 @@ IMPORTANTE: no olvidar añadir el ultimo '/' al especificar la ruta
 
 Al guardar las imágenes se recibe por pantalla el html correspondiente con las url de las imágenes en firebase.
 
-Para la creación de los formpularios tendremos que introducir la url del google-form y darle al boton de search
+Para la creación de los formularios tendremos que introducir la url del google-form y darle al boton de search
+
+![image](https://user-images.githubusercontent.com/88329284/130082355-004076f1-b3d2-4d7d-8685-d8bbf12d7395.png)
 
 Cuando nos aparezca el mensaje de que se ha descargado el formulario podremos darle al botón de convert para 
 
 obtener el formulario como queremos.
+
+![image](https://user-images.githubusercontent.com/88329284/130082495-76ea4b0d-a79a-4daa-b6a8-f24b3389a972.png)
+
