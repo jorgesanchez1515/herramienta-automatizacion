@@ -28,6 +28,7 @@ const ImagesUploader = () => {
 		})
 
 		image.url = await response.json()
+		console.log(image.url)
 	}
 
 	const uploadImages = () => {
@@ -75,14 +76,17 @@ const ImagesUploader = () => {
 					)}
 				</Grid>
 
-				{urls.map(elem => 
-					<List>
-						<List.Item>{'<div>'}</List.Item>
-						<List.Item><pre className="noMargin">{'\t<img src={"' + elem + '"} alt="boohoo" className="img-responsive"/>'}</pre></List.Item>
-						<List.Item><pre>{'\t<br/>'}</pre></List.Item>
-						<List.Item>{'</div>'}</List.Item>
-					</List>
-				)}
+				<List className="myList">
+					{urls.map(elem => 
+						<List.Item>
+							<pre className="textLine">{'<div>'}</pre>
+							<pre className="textLine">{'\t<img src={"' + elem + '"} alt="boohoo" className="img-responsive"/>'}</pre>
+							<pre className="textLine">{'\t<br/>'}</pre>
+							<pre className="textLine">{'</div>'}</pre>
+						</List.Item>
+					)}
+				</List>
+
 			</div>
 		</div>
 	);

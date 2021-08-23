@@ -1,7 +1,6 @@
 .ImagesUploader {
 	height: 100%;
 	width: 100%;
-	background-color: #FFFFFF;
   
 	display: flex;
 	flex-direction: column;
@@ -25,6 +24,8 @@
 	justify-content: center;
 }
 
-.noMargin {
+.textLine {
 	margin: 0px;
+	text-align: start;
+	color: white;
 }

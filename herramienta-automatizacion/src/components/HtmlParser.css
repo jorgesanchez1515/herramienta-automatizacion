@@ -11,10 +11,8 @@
 	flex-direction: column;
 }
 
-.line {
-	text-align: start;
-}
-
-.noMargin {
+.textLine {
 	margin: 0px;
+	text-align: start;
+	color: white;
 }
