@@ -10,7 +10,6 @@ const HOST =  process.env.HOST || "http://localhost:8080"
 
 const HtmlParser = () => {
 
-	const [text, setText] = useState("")
 	const [html, setHTML] = useState("")
 
 	const getHTML = async () => {	
@@ -23,64 +22,49 @@ const HtmlParser = () => {
 		const resp = await fetch(HOST + "/getHtml", {headers: {url}})
 		const data = await resp.json()
 
-		setText(data)
 		toast.info("Html downloaded")
-	}
 
-	const parse = () => {
+		const publicLoadData = getPublicLoadData(data)
 
-		const [head, body] = text.split('class="freebirdFormviewerViewItemList"')
+		console.log(publicLoadData)
 
-		let title = head.split('class="freebirdFormviewerViewHeaderTitle exportFormTitle freebirdCustomFont"')[1]
-		title = getValue(title)
+		let description = publicLoadData[0]
+		let questions   = publicLoadData[1]
+		let title       = publicLoadData[8]
 
-		let desctipton = head.split('class="freebirdFormviewerViewHeaderDescription"')[1]
-		desctipton = getValue(desctipton)
-
-		let questions  = body.split('class="freebirdFormviewerViewNumberedItemContainer"')
-		questions.shift()
-
-		questions = questions.map(elem => {
-
-			let question = elem.split('class="freebirdFormviewerComponentsQuestionBaseTitle exportItemTitle freebirdCustomFont"')[1]
-			question = getValue(question)
-
-			let type    = getType(elem)
-			let options = []
-
-			if(type.optionsClassName !== "") {
-				options = elem.split(type.optionsClassName)
-				options.shift()
-				options = options.map(elem => getValue(elem))
+		questions = questions.map(quest => {
+			return {
+				label:   quest[0],
+				legend:  quest[1],
+				type:    getType(quest[3]),
+				entry:   quest[4][0][0],
+				options: quest[4][0][1]
 			}
-
-			return {question, type: type.name, options}
 		})
 
-		console.log({title, desctipton, questions})
-		convertHTML({title, desctipton, questions})
+		convertHTML({title, description, questions})
 	}
 
-	const getType = (question) => {
-		if(question.includes('class="freebirdFormviewerComponentsQuestionCheckboxRoot"'))
-			return {name: "checkbox", optionsClassName: "docssharedWizToggleLabeledLabelText exportLabel freebirdFormviewerComponentsQuestionCheckboxLabel"}
-		else if(question.includes('class="freebirdFormviewerComponentsQuestionRadioRoot"'))
-			return {name: "radio", optionsClassName: "docssharedWizToggleLabeledLabelText exportLabel freebirdFormviewerComponentsQuestionRadioLabel"}
-		else if(question.includes('class="freebirdFormviewerComponentsQuestionSelectRoot"'))
-			return {name: "dropdown", optionsClassName: "quantumWizMenuPaperselectContent exportContent"}
-		else if(question.includes('class="quantumWizTextinputPaperinputEl freebirdFormviewerComponentsQuestionTextShort'))
-			return {name: "text", optionsClassName: ""}		
-		else if(question.includes('class="quantumWizTextinputPapertextareaEl modeLight freebirdFormviewerComponentsQuestionTextLong'))
-			return {name: "paragraph", optionsClassName: ""}
-		else
-			return {name: "ERROR_TYPE", optionsClassName: ""}
+	const getPublicLoadData = (str) => {
+		const data = str.split('var FB_PUBLIC_LOAD_DATA_ = ')[1].split(';')[0]	
+		return JSON.parse(data)[1]
 	}
 
-	const getValue = (str) => {
-		// Get element between ">" and "</"
-		// extract("<div>example</div>") --- returns ---> "example"
-
-		return str.split("</")[0].split(">")[1]
+	const getType = (num) => {
+		switch(num) {
+			case 0:
+				return "text"
+			case 1:
+				return "paragraph"
+			case 2:
+				return "radio"
+			case 3:
+				return "dropdown"
+			case 4:
+				return "checkbox"
+			default:
+				return "ERROR_TYPE"
+		}
 	}
 
 	const convertHTML = (obj) => {
@@ -88,17 +72,27 @@ const HtmlParser = () => {
 
 		html += '<form  onChange={onChange} className="trabajo-l1" id="l1-course-form">\n'
 
+
 		// Title
+
 		html += '\t<fieldset>\n'
-		html += '\t\t<div>\n\t\t\t<h2 className="L1">' + obj.title + '</h2>\n\t\t</div>\n' 
+		html += '\t\t<div>\n'
+		html += '\t\t\t<h2 className="L1">' + obj.title + '</h2>\n'
+		html += '\t\t</div>\n' 
 		html += '\t</fieldset>\n'
 
+
 		// Description
+
 		html += '\t<fieldset>\n'
-		html += '\t\t<div className="parrafo-uno">\n\t\t\t<p>' + obj.desctipton + '</p>\n\t\t</div>\n'
+		html += '\t\t<div className="parrafo-uno">\n'
+		html += '\t\t\t<p>' + obj.description + '</p>\n'
+		html += '\t\t</div>\n'
 		html += '\t</fieldset>\n'
 		
+
 		// email
+
 		html += '\t<fieldset>\n'
         html += '\t\t<legend for="" className="leyenda">Email</legend>\n'
 		html += '\t\t<div class="form-group">\n'
@@ -106,50 +100,77 @@ const HtmlParser = () => {
 		html += '\t\t</div>\n'
 		html += '\t</fieldset>\n'
 
+
 		// Questions
-		let questionNum = 1
 
 		obj.questions.forEach(elem => {
+			
 			html += '\t<fieldset>\n'
-			html += '\t\t<legend for="' + questionNum + '0000000" className="leyenda">' + elem.question + '</legend>\n'
+			html += '\t\t<legend for="' + elem.label + '" className="leyenda">' + elem.legend + '</legend>\n'
 			html += '\t\t<div class="form-group">\n'
 
-			// Radio and checkboxes elements
-			if(elem.type === "radio" || elem.type === "checkbox") {
+
+			// Radio inputs
+			if(elem.type === "radio") {
 				elem.options.forEach(opt => {
-					html += '\t\t\t<div class="' + elem.type + '">\n'
+					const optValue = (opt[0] !== "" ? opt[0] : "__other_option__")
+
+					html += '\t\t\t<div class="radio">\n'
 					html += '\t\t\t\t<label className="etiqueta">\n' 
-					html += '\t\t\t\t\t<input type="' + elem.type + '" name="entry.' + questionNum + '" value="' + opt + '"' + (elem.type === "radio"? " required" : "") + '/>\n'
-					html += '\t\t\t\t\t' + opt + '\n'
+					html += '\t\t\t\t\t<input type="radio" name="entry.' + elem.entry + '" value="' + optValue + '" required/>\n'
+					html += '\t\t\t\t\t' + opt[0] + '\n'
 					html += '\t\t\t\t</label>\n' 
+	
+					if(opt[0] === "")
+						html += '\t\t\t\t<input type="text" name="entry.' + elem.entry + '.other_option_response" placeholder="Other">\n' 
+	
 					html += '\t\t\t</div>\n'
 				})
 			}
-			
-			// dropdown elements
+
+
+			// Checkbox inputs
+			if(elem.type === "checkbox") {
+				elem.options.forEach(opt => {
+					const optValue = (opt[0] !== "" ? opt[0] : "__other_option__")
+	
+					html += '\t\t\t<div class="checkbox">\n'
+					html += '\t\t\t\t<label className="etiqueta">\n' 
+					html += '\t\t\t\t\t<input type="checkbox" name="entry.' + elem.entry + '" value="' + optValue + '"/>\n'
+					html += '\t\t\t\t\t' + opt[0] + '\n'
+					html += '\t\t\t\t</label>\n' 
+	
+					if(opt[0] === "")
+						html += '\t\t\t\t<input type="text" name="entry.' + elem.entry + '.other_option_response" placeholder="Other">\n' 
+
+					html += '\t\t\t</div>\n'
+				})
+			}
+
+
+			// Dropdown inputs
 			if(elem.type === "dropdown") {
-				html += '\t\t\t<select>\n'
-				html += '\t\t\t\t<option disabled hidden selected>' + elem.options.shift() + '</option>\n'
+				html += '\t\t\t<select name="entry.' + elem.entry + '">\n'
+				html += '\t\t\t\t<option disabled hidden selected>Choose an option</option>\n'
 				
 				elem.options.forEach(opt => {
-					html += '\t\t\t\t<option name="entry.' + questionNum + '" value="' + opt + '" required/>\n'
-					html += '\t\t\t\t\t' + opt + '\n'
+					html += '\t\t\t\t<option value="' + opt[0] + '" required/>\n'
+					html += '\t\t\t\t\t' + opt[0] + '\n'
 					html += '\t\t\t\t</option>\n'
 				})
-
+	
 				html += '\t\t\t</select>\n'
 			}
 
-			// input text
-			if(elem.type === "text" || elem.type === "paragraph") {
-				html += '\t\t\t<input id="' + questionNum + '" type="text" class="' + elem.type + '"/>\n'
-			}
+
+			// Text inputs
+			if(elem.type === "text" || elem.type === "paragraph") 
+				html += '\t\t\t<input name="entry.' + elem.entry + '" type="text" class="' + elem.type + '"/>\n'
+
 
 			html += '\t\t</div>\n'
 			html += '\t</fieldset>\n'
-
-			questionNum += 1
-		});
+		})
 
 		html += '\t<input type="hidden" name="fvv" value="1"/>\n'
 		html += '\t<input type="hidden" name="fbzx" value="8461977738504272510"/>\n'
@@ -159,7 +180,6 @@ const HtmlParser = () => {
 		html += '\t</div>\n'
 		html += '</form>\n'
 
-		console.log(html)
 		setHTML(html)
 	}
 
@@ -167,14 +187,13 @@ const HtmlParser = () => {
 		<div className="center">
 			<div>
 				<Button inverted color="orange" onClick={() => getHTML()}>Search</Button>
-				<Button primary onClick={() => parse()}>Convert</Button>
 				<Input id="input" placeholder="url here" icon="search"></Input>
 			</div>
 
 			<div className="center">
 				<List>
 					{html.split("\n").map(elem => 
-						<List.Item className="line"><pre className="noMargin">{elem}</pre></List.Item>
+						<List.Item><pre className="textLine">{elem}</pre></List.Item>
 					)}
 				</List>
 			</div>

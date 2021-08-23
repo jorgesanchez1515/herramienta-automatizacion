@@ -13,23 +13,23 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<div className="buttons">
-				<button onClick={
+			<div className="nav">
+				<div className="elem" onClick={
 					() => {
 						setHtmlParser(false)
 						setImagesUploader(true)
 					}
-				}>Upload Images</button>
-				<button onClick={
+				}>Upload Images</div>
+				<div className="elem" onClick={
 					() => {
 						setHtmlParser(true)
 						setImagesUploader(false)
 					}
-				}>Extract HTML</button>
+				}>Extract HTML</div>
 			</div>
 			<div className="main">
 				{imagesUploader && <ImagesUploader/>}
-				{htmlParser  && <HtmlParser/>}
+				{htmlParser     && <HtmlParser/>}
 			</div>
 		</div>
 	);
