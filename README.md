@@ -1,70 +1,52 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# API REST
 
-## Available Scripts
+Para hacer uso de la herramienta se deberá ejecutar primero la API REST
 
-In the project directory, you can run:
+La API se encargará de recibir las peticiones de la aplicación y acceder a firebase.
 
-### `npm start`
+Para ello se debe añadir los datos de firebase al fichero src/firebase/index.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![firebaseConfig](https://user-images.githubusercontent.com/88329284/130078916-55673b62-c81f-48fe-b268-2b6ab926a8a4.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+También se debe especificar el origen de las peticiones en el archivo src/index.js
 
-### `npm test`
+![image](https://user-images.githubusercontent.com/88329284/130079160-cea87640-51a7-478f-bc7f-5330286561ab.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Por defecto es localhost:3000 pero podría ser localhost:5000 o cualquier otro host y puerto que se estén utilizando.
 
-### `npm run build`
+Para ejecutar la API se utiliza el comando node src/index.js 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Una vez ejecutado el comando debería aparecer por consola el mensaje "server using port 8080"
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Herramienta
 
-### `npm run eject`
+La aplicación está construida en react. Para ejecutarlo se puede usar yarn o npm.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Para la subida de imagenes a firebase se debe especificar la ruta en el storage de firebase que quermos utilizar
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+ej. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Si especificamos la siguiente ruta:
+misimagenes/Jorge/Sanchez/  
+Las imagenes se guardarán en firebase de la siguiente forma
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+![image](https://user-images.githubusercontent.com/88329284/130080687-4a4c4474-436a-4671-b60f-5604ad5824da.png)
 
-## Learn More
+IMPORTANTE: no olvidar añadir el ultimo '/' al especificar la ruta
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![image](https://user-images.githubusercontent.com/88329284/130080503-a4c48023-9a2e-4aac-a83c-b7850a77ff4f.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Al guardar las imágenes se recibe por pantalla el html correspondiente con las url de las imágenes en firebase.
 
-### Code Splitting
+Para la creación de los formularios tendremos que introducir la url del google-form y darle al boton de search
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+![image](https://user-images.githubusercontent.com/88329284/130082355-004076f1-b3d2-4d7d-8685-d8bbf12d7395.png)
 
-### Analyzing the Bundle Size
+Cuando nos aparezca el mensaje de que se ha descargado el formulario podremos darle al botón de convert para 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+obtener el formulario como queremos.
 
-### Making a Progressive Web App
+![image](https://user-images.githubusercontent.com/88329284/130082495-76ea4b0d-a79a-4daa-b6a8-f24b3389a972.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
