@@ -2,8 +2,8 @@ import './App.css';
 import React, { useState } from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import ImagesUploader from './components/ImagesUploader';
-import HtmlParser from './components/HtmlParser';
+import ImagesUploader from './components/ImagesUploader/ImagesUploader';
+import HtmlParser from './components/HtmlParser/HtmlParser';
 
 
 const App = () => {
