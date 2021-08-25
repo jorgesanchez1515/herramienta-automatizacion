@@ -91,7 +91,7 @@ const ImagesUploader = () => {
 
 				<List className="myList">
 					<List.Item>
-						{images.length === 0 && urls && <Button className="center" onClick={() => copyToClipboard()}>Copy html</Button>}
+						{images.length === 0 && urls.length !== 0 && <Button className="center" onClick={() => copyToClipboard()}>Copy html</Button>}
 					</List.Item>
 
 					{images.length === 0 && urls.map(elem => 
