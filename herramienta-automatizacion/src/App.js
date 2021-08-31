@@ -1,10 +1,13 @@
-import './App.css';
-import React, { useState } from 'react';
-import 'semantic-ui-css/semantic.min.css';
-import 'react-toastify/dist/ReactToastify.css';
-import ImagesUploader from './components/ImagesUploader/ImagesUploader';
-import HtmlParser from './components/HtmlParser/HtmlParser';
+import React, { useState } from 'react'
 
+// Styles
+import './App.scss'
+import 'semantic-ui-css/semantic.min.css'
+import 'react-toastify/dist/ReactToastify.css'
+
+// Components
+import ImagesUploader from './pages/UploadImagesFirebase/ImagesUploader'
+import HtmlParser from './pages/GoogleFromExtract/HtmlParser'
 
 const App = () => {
 
