@@ -18,7 +18,7 @@ $loader-dot--size: 12px;
 		animation: {
 			name: loader;
 			timing-function: ease-in-out;
-			duration: 3s;
+			duration: 2.6s;
 			iteration-count: infinite;
 		};
 		height: $loader-dot--size;
@@ -26,55 +26,35 @@ $loader-dot--size: 12px;
 		border-radius: 100%;
 		background-color: black;
 		position: absolute;
-		border: 2px solid white;
 		
 		&:first-child {
 			background-color: #F02844;
-			animation-delay: 0.5s;
+			animation-delay: 0.64s;
 		}
 
 		&:nth-child(2) {
 			background-color: #d4021d;
-			animation-delay: 0.4s;
+			animation-delay: 0.52s;
 		}
 
 		&:nth-child(3) {
 			background-color: #ab0018;
-			animation-delay: 0.3s;
+			animation-delay: 0.40s;
 		}
 
 		&:nth-child(4) {
 			background-color: #ff9f31;
-			animation-delay: 0.2s;
+			animation-delay: 0.28s;
 		}
 
 		&:nth-child(5) {
 			background-color: #ee7f00;
-			animation-delay: 0.1s;
+			animation-delay: 0.16s;
 		}
 
 		&:nth-child(6) {
 			background-color: #bd6500;
 			animation-delay: 0s;
-		}
-	}
-
-	&--text {
-		position: absolute;	
-		top: 200%;
-		left: 0;
-    	right: 0;
-    	width: 4rem;
-    	margin: auto;
-	}
-
-    &:after {
-		content: "Loading";   
-		font-weight: bold;
-		animation: {
-			name: loading-text;
-			duration: 3s;
-			iteration-count: infinite;
 		}
 	}
 }
@@ -91,20 +71,5 @@ $loader-dot--size: 12px;
 	}
 	95% {
 		transform: translateX(0);
-	}
-}
-
-@keyframes loading-text {
-	0% {
-		content: "Loading";
-	}
-	25% {
-		content: "Loading.";
-	}
-	50% {
-		content: "Loading..";
-	}
-	75% {
-		content: "Loading...";
 	}
 }

@@ -85,53 +85,67 @@ const ImagesUploader = () => {
 
 	return (
 		<div className="ImagesUploader">
+			
 			<div className="dataInput">
 				<MyDropzone setImages={setImages}/>
 			</div>
 
+
 			<input id="reference" type="text" placeholder="reference" className="dataInput"/>
 
-			<div className="buttons">
-				<Button inverted color="orange" onClick={() => uploadImages()}>Upload</Button>
-				<Button color="red" onClick={() => setImages([])}>Delete images</Button>
-			</div>
 
-			<div className="dataOutput">
+			{images.length !== 0 &&
+				<div className="buttons">
+					<Button inverted color="orange" onClick={() => uploadImages()}>Upload</Button>
+					<Button color="red" onClick={() => setImages([])}>Delete images</Button>
+				</div>
+			}
 
 
+			{images.length === 0 && urls.length !== 0 && 
+				<Button 
+					color="orange" inverted
+						
+					style={{
+						width: "200px",
+						transform: 'translate(0px, 50px)',
+					}} 
+					
+					onClick={() => copyToClipboard()}>
+						
+					Copy html
+				</Button>
+			}
+
+
+			<div className="imagesOutput">
 				<Grid columns={5}>
-					<Grid.Row>
-						{searching && <LoaderAnimation/>}
-						{searching && <MyProgressBar progress={progress}/>}
-					</Grid.Row>
+					<Grid.Row> {searching &&  <LoaderAnimation/>} </Grid.Row>
+					<Grid.Row> {searching && <MyProgressBar progress={progress}/>} </Grid.Row> 
 
 					{chunk(images, 5).map(row => 
 						<Grid.Row>
 							{row.map(image => 
-								<Grid.Column>
-									<ImageCard image={image} deleteImage={deleteImage}/>
-								</Grid.Column>
+								<Grid.Column> <ImageCard image={image} deleteImage={deleteImage}/> </Grid.Column>
 							)}
 						</Grid.Row>
 					)}
 				</Grid>
-
-				<List className="myList">
-					<List.Item>
-						{images.length === 0 && urls.length !== 0 && <Button className="center" onClick={() => copyToClipboard()}>Copy html</Button>}
-					</List.Item>
-
-					{images.length === 0 && urls.map(elem => 
-						<List.Item>
-							<pre className="textLine">{'<div>'}</pre>
-							<pre className="textLine">{'\t<img src={"' + elem + '"} alt="boohoo" className="img-responsive"/>'}</pre>
-							<pre className="textLine">{'\t<br/>'}</pre>
-							<pre className="textLine">{'</div>'}</pre>
-						</List.Item>
-					)}
-				</List>
-
 			</div>
+
+
+			<div className="htmlOutput">
+				{images.length === 0 && urls.map(elem => 
+					<div>
+						<pre className="textLine">{'<div>'}</pre>
+						<pre className="textLine">{'\t<img src={"' + elem + '"} alt="boohoo" className="img-responsive"/>'}</pre>
+						<pre className="textLine">{'\t<br/>'}</pre>
+						<pre className="textLine">{'</div>'}</pre>
+					</div>
+				)}
+			</div>
+			
+
 		</div>
 	);
 

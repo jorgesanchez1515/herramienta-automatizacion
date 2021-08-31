@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Tab } from 'semantic-ui-react'
 
 // Styles
 import './App.scss'
@@ -11,29 +12,31 @@ import HtmlParser from './pages/GoogleFromExtract/HtmlParser'
 
 const App = () => {
 
-	const [imagesUploader, setImagesUploader] = useState(false)
-	const [htmlParser, setHtmlParser] = useState(false)
+	const panes = [
+		{
+			menuItem: 'Upload images',
+			render: () => <ImagesUploader/>
+		},
+		{
+			menuItem: 'Extract html',
+			render: () => <HtmlParser/>
+		}
+	]
+
+	const style = {
+		padding: "15px",
+	}
+
+	const menu = {
+		inverted: true,
+		secondary: true,
+		pointing: true,
+		color: "orange",
+	}
 
 	return (
 		<div className="App">
-			<div className="nav">
-				<div className="elem" onClick={
-					() => {
-						setHtmlParser(false)
-						setImagesUploader(true)
-					}
-				}>Upload Images</div>
-				<div className="elem" onClick={
-					() => {
-						setHtmlParser(true)
-						setImagesUploader(false)
-					}
-				}>Extract HTML</div>
-			</div>
-			<div className="main">
-				{imagesUploader && <ImagesUploader/>}
-				{htmlParser     && <HtmlParser/>}
-			</div>
+			<Tab style={style} menu={menu} panes={panes} />
 		</div>
 	);
 

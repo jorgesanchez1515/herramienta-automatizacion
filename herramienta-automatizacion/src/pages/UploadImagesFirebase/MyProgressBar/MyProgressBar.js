@@ -9,7 +9,7 @@ const MyProgressBar = (props) => {
 
 	return (
 		<div className="progress">
-			<div id="hola" className="color" style={{width: value + "%" }}></div>
+			<div className="color" style={{width: value + "%" }}></div>
 		</div>
 	)
 }
