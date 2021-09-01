@@ -72,7 +72,7 @@ const ImagesUploader = () => {
 			setProgress(100 * ++uploadedImages / images.length)
 
 
-			if(resp.status !== 200)
+			if(resp.status > 399)
 				throw {message: "Error while uploading image..."}
 
 			if( !respData.includes("https://firebasestorage.googleapis.com") ) 
@@ -139,10 +139,10 @@ const ImagesUploader = () => {
 
 
 			<div className="imagesOutput">
-				<Grid columns={5}>
-					<Grid.Row> {searching &&  <LoaderAnimation/>} </Grid.Row>
-					<Grid.Row> {searching && <MyProgressBar progress={progress}/>} </Grid.Row> 
+				{searching && <LoaderAnimation/>}
+				{searching && <MyProgressBar progress={progress}/>}
 
+				<Grid columns={5}>
 					{chunk(images, 5).map(row => 
 						<Grid.Row>
 							{row.map(image => 
