@@ -37,29 +37,53 @@ const ImagesUploader = () => {
 
 		Promise.all(promises)
 		.then(() => {
-			setUrls(images.map(elem => elem.url))
+			const newUrls = images.map(elem => elem.url)
+			setUrls(newUrls)
+
+			if(newUrls.includes(""))
+				throw "Some images have not been uploaded correctly"
+
+			toast.info("Files uploaded correctly")
+		})
+		.catch((err) => {
+			toast.error(err)
+		})
+		.finally(() => {
 			setImages([])
 			setSearching(false)
 			setProgress(0)
-			toast.info("Files uploaded")
 		})
-		.catch(err => toast.error(err))
 	}
 
 
 	const postImage = async (image, ref) => {
-		
-		const data = new FormData()
-		data.append('image', image)
+		try {
+			const data = new FormData()
+			data.append('image', image)
+	
+			const resp = await fetch(HOST + "/postImage", {
+				headers: {ref},
+				method: "POST",
+				body: data
+			})
+	
+			const respData = await resp.json()
 
-		const response = await fetch(HOST + "/postImage", {
-			headers: {ref},
-			method: "POST",
-			body: data
-		})
+			setProgress(100 * ++uploadedImages / images.length)
 
-		image.url = await response.json()
-		setProgress(100 * ++uploadedImages / images.length)
+
+			if(resp.status !== 200)
+				throw {message: "Error while uploading image..."}
+
+			if( !respData.includes("https://firebasestorage.googleapis.com") ) 
+				throw {message: "ERROR: The url is not correct..."}
+			
+
+			image.url = respData
+		}
+		catch(e) {
+			console.log(e.message || "Error uploading image")
+		}
 	}
 	
 
@@ -132,7 +156,7 @@ const ImagesUploader = () => {
 
 			<div className="htmlOutput">
 				{images.length === 0 && urls.map(elem => 
-					<div>
+					<div className={elem ? '' : 'error'}>
 						<pre className="textLine">{'<div>'}</pre>
 						<pre className="textLine">{'\t<img src={"' + elem + '"} alt="boohoo" className="img-responsive"/>'}</pre>
 						<pre className="textLine">{'\t<br/>'}</pre>
