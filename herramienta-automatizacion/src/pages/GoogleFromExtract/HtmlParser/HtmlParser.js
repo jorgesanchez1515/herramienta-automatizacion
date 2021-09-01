@@ -53,7 +53,7 @@ const HtmlParser = () => {
 			convertHTML({title, description, questions})
 		}	
 		catch(e) {
-			toast.info("ERROR: " + (e.message || "something went wrong..."))
+			toast.error("ERROR: " + (e.message || "something went wrong..."))
 		}
 	}
 
@@ -85,16 +85,18 @@ const HtmlParser = () => {
 	}
 
 	const convertHTML = (obj) => {
+		const classNames = getClassNames(obj.title)
+		
 		let html = "" 
 
-		html += '<form  onChange={onChange} className="trabajo-l1" id="l1-course-form">\n'
+		html += '<form  onChange={onChange} className="' + classNames.formClass + '" id="' + classNames.formId + '">\n'
 
 
 		// Title
 
 		html += '\t<fieldset>\n'
 		html += '\t\t<div>\n'
-		html += '\t\t\t<h2 className="L1">' + obj.title + '</h2>\n'
+		html += '\t\t\t<h2 className="' + classNames.titleClass + '">' + obj.title + '</h2>\n'
 		html += '\t\t</div>\n' 
 		html += '\t</fieldset>\n'
 
@@ -102,7 +104,7 @@ const HtmlParser = () => {
 		// Description
 
 		html += '\t<fieldset>\n'
-		html += '\t\t<div className="parrafo-uno">\n'
+		html += '\t\t<div className="' + classNames.paragraphClass + '">\n'
 		html += '\t\t\t<p>' + obj.description + '</p>\n'
 		html += '\t\t</div>\n'
 		html += '\t</fieldset>\n'
@@ -111,9 +113,9 @@ const HtmlParser = () => {
 		// email
 
 		html += '\t<fieldset>\n'
-        html += '\t\t<legend for="" className="leyenda">Email</legend>\n'
+        html += '\t\t<legend for="" className="' + classNames.legendClass + '">Email</legend>\n'
 		html += '\t\t<div class="form-group">\n'
-		html += '\t\t\t<input id="emailAddress" type="email" name="emailAddress" class="form-control" required/>\n'
+		html += '\t\t\t<input id="emailAddress" type="email" name="emailAddress" class="' + classNames.inputClass + '" required/>\n'
 		html += '\t\t</div>\n'
 		html += '\t</fieldset>\n'
 
@@ -124,7 +126,7 @@ const HtmlParser = () => {
 		obj.questions.forEach(elem => {
 			
 			html += '\t<fieldset>\n'
-			html += '\t\t<legend for="' + elem.label + '" className="leyenda">' + num++ + '. ' + elem.legend + '</legend>\n'
+			html += '\t\t<legend for="' + elem.label + '" className="' + classNames.legendClass + '">' + num++ + '. ' + elem.legend + '</legend>\n'
 			html += '\t\t<div class="form-group">\n'
 
 
@@ -134,7 +136,7 @@ const HtmlParser = () => {
 					const optValue = (opt[0] !== "" ? opt[0] : "__other_option__")
 
 					html += '\t\t\t<div class="radio">\n'
-					html += '\t\t\t\t<label className="etiqueta">\n' 
+					html += '\t\t\t\t<label className="' + classNames.labelClass + '">\n' 
 					html += '\t\t\t\t\t<input type="radio" name="entry.' + elem.entry + '" value="' + optValue + '" required/>\n'
 					html += '\t\t\t\t\t' + opt[0] + '\n'
 					html += '\t\t\t\t</label>\n' 
@@ -153,7 +155,7 @@ const HtmlParser = () => {
 					const optValue = (opt[0] !== "" ? opt[0] : "__other_option__")
 	
 					html += '\t\t\t<div class="checkbox">\n'
-					html += '\t\t\t\t<label className="etiqueta">\n' 
+					html += '\t\t\t\t<label className="' + classNames.labelClass + '">\n' 
 					html += '\t\t\t\t\t<input type="checkbox" name="entry.' + elem.entry + '" value="' + optValue + '"/>\n'
 					html += '\t\t\t\t\t' + opt[0] + '\n'
 					html += '\t\t\t\t</label>\n' 
@@ -201,34 +203,88 @@ const HtmlParser = () => {
 		setHTML(html)
 	}
 
+	const getClassNames = (title) => {
+		if(title.includes("L1")) {
+			return {
+				formClass:      "trabajo-l1",
+				formId:         "l1-course-form",
+				titleClass:     "L1",
+				paragraphClass: "parrafo-uno",
+				legendClass:    "leyenda",
+				inputClass:     "form-control",
+				labelClass :    "etiqueta"
+			}
+		}
+		else if(title.includes("L2")) {
+			return {
+				formClass:      "trabajo-l2",
+				formId:         "l2-course-form",
+				titleClass:     "L2",
+				paragraphClass: "parrafo-dos",
+				legendClass:    "leyenda-dos",
+				inputClass:     "form-control-estilo-dos",
+				labelClass :    "etiqueta-dos"
+			}
+		}
+		else if(title.includes("TEST")) {
+			return {
+				formClass:      "trabajo-U1",
+				formId:         "U1-course-form",
+				titleClass:     "U1",
+				paragraphClass: "parrafo-u1",
+				legendClass:    "leyenda-tres",
+				inputClass:     "form-control-estilo-tres",
+				labelClass :    "etiqueta-tres"
+			}
+		}
+		return {
+			title: "ERROR"
+		}
+	}
+
 	const createUrl = (myUrl) => {
 		const arr = myUrl.split("/")
 		arr[arr.length - 1] = "formResponse"
 		return arr.join("/")
 	}
 
-	const copyToClipboard = () => {
-		navigator.clipboard.writeText(html);
-		toast.info("Copied html");
+	const copyToClipboard = (txt) => {
+		navigator.clipboard.writeText(txt);
+		toast.info("Copied text");
 	}
 
 	return (
 		<div className="center">
 			<div>
-				<Button inverted color="orange" onClick={() => getHTML()}>Search</Button>
-				<Input id="input" placeholder="url here" icon="search"></Input>
+				<Button inverted color="orange" style={{width: "100px"}} onClick={() => getHTML()}>Search</Button>
+				<Input id="input" placeholder="url here" style={{width: "300px"}} icon="search"></Input>
 			</div>
+
+			{html && 
+				<div>
+					<Button 
+						color="orange" 
+						inverted 
+						style={{width: "200px", "margin-top": '50px' }} 
+						onClick={() => copyToClipboard(html)}>
+							
+						Copy html
+					</Button>
+					<Button 
+						color="orange" 
+						inverted 
+						style={{width: "200px", "margin-top": '50px' }} 
+						onClick={() => copyToClipboard(createUrl(url))}>
+							
+						Copy url
+					</Button>
+				</div>
+			}
+
+			{url && <div className="textLine"><br/><br/><br/>{createUrl(url)}<br/><br/></div>}
 
 			<div className="center">
 				<List>
-					<List.Item>
-						{url && <div className="textLine">{createUrl(url)}<br/><br/><br/></div>}
-					</List.Item>
-
-					<List.Item>
-						{html && <Button className="center" onClick={() => copyToClipboard()}>Copy html</Button>}
-					</List.Item>
-
 					{html.split("\n").map(elem => 
 						<List.Item><pre className="textLine">{elem}</pre></List.Item>
 					)}

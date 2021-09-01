@@ -104,13 +104,9 @@ const ImagesUploader = () => {
 
 			{images.length === 0 && urls.length !== 0 && 
 				<Button 
-					color="orange" inverted
-						
-					style={{
-						width: "200px",
-						transform: 'translate(0px, 50px)',
-					}} 
-					
+					color="orange" 
+					inverted 
+					style={{width: "200px", transform: 'translate(0px, 50px)' }} 
 					onClick={() => copyToClipboard()}>
 						
 					Copy html
