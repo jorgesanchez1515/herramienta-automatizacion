@@ -53,7 +53,8 @@ const HtmlParser = () => {
 			convertHTML({title, description, questions})
 		}	
 		catch(e) {
-			toast.error("ERROR: " + (e.message || "something went wrong..."))
+			console.log(e)
+			toast.error("ERRORwww: " + (e.message || "something went wrong..."))
 		}
 	}
 
@@ -237,6 +238,7 @@ const HtmlParser = () => {
 				labelClass :    "etiqueta-tres"
 			}
 		}
+		toast.error("Form type not found")
 		return {
 			title: "ERROR"
 		}
@@ -266,24 +268,22 @@ const HtmlParser = () => {
 						color="orange" 
 						inverted 
 						style={{width: "200px", "margin-top": '50px' }} 
-						onClick={() => copyToClipboard(html)}>
-							
-						Copy html
-					</Button>
+						onClick={() => copyToClipboard(html)}
+						content="Copy HTML"
+					/>
 					<Button 
 						color="orange" 
 						inverted 
 						style={{width: "200px", "margin-top": '50px' }} 
-						onClick={() => copyToClipboard(createUrl(url))}>
-							
-						Copy url
-					</Button>
+						onClick={() => copyToClipboard(createUrl(url))}
+						content="Copy url"
+					/>
 				</div>
 			}
 
 			{url && <div className="textLine"><br/><br/><br/>{createUrl(url)}<br/><br/></div>}
 
-			<div className="center">
+			<div className="htmltext">
 				<List>
 					{html.split("\n").map(elem => 
 						<List.Item><pre className="textLine">{elem}</pre></List.Item>
