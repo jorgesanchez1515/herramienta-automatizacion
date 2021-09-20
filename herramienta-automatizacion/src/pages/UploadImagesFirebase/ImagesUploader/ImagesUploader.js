@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import { List, Button, Grid } from "semantic-ui-react"
-import { chunk } from 'lodash';
+import { chunk } from 'lodash'
+import { db } from '../../utils/Firebase'
 
 // Styles
 import './ImagesUploader.scss'
@@ -16,8 +17,6 @@ import LoaderAnimation from '../LoaderAnimation/LoaderAnimation'
 
 toast.configure()
 
-const HOST =  process.env.HOST || "http://localhost:8080"
-
 const ImagesUploader = () => {
 	
 	const [images, setImages]       = useState([])
@@ -31,7 +30,7 @@ const ImagesUploader = () => {
 		uploadedImages = 0
 		setSearching(true)
 
-		const ref = document.getElementById("reference").value
+		const ref = document.getElementById("reference").value || "noReference/"
 
 		const promises = images.map(image => postImage(image, ref))
 
@@ -58,28 +57,15 @@ const ImagesUploader = () => {
 
 	const postImage = async (image, ref) => {
 		try {
-			const data = new FormData()
-			data.append('image', image)
-	
-			const resp = await fetch(HOST + "/postImage", {
-				headers: {ref},
-				method: "POST",
-				body: data
-			})
-	
-			const respData = await resp.json()
+			const uploadTask = await db.ref(ref + image.id).put(image, {contentType: image.mimetype})
+			const imageURL   = await db.ref(ref + image.id).getDownloadURL()
 
 			setProgress(100 * ++uploadedImages / images.length)
 
-
-			if(resp.status > 399)
-				throw {message: "Error while uploading image..."}
-
-			if( !respData.includes("https://firebasestorage.googleapis.com") ) 
+			if( !imageURL.includes("https://firebasestorage.googleapis.com") ) 
 				throw {message: "ERROR: The url is not correct..."}
 			
-
-			image.url = respData
+			image.url = imageURL
 		}
 		catch(e) {
 			console.log(e.message || "Error uploading image")

@@ -38,12 +38,7 @@ const MyDropzone = (props) => {
 	return (
 		<div className="dropzone" {...getRootProps()}>
 		  	<input {...getInputProps()}/>
-		  	{
-				isDragActive?  
-					<p>Drop the files here...</p>  
-				:
-					<p>Drag and drop some files here, or click to select files</p>
-		  	}
+			<p>{isDragActive ? "Drop the files here..." : "Drag and drop some files here, or click to select files"}</p>
 		</div>
 	)
 }
