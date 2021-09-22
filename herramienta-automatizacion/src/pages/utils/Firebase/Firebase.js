@@ -16,4 +16,6 @@ const app  = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth()
 const db   = firebase.storage()
 
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+
 export { auth, db, firebase }
